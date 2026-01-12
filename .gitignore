@@ -34,11 +34,6 @@ Thumbs.db
 runs/
 yolov8n.pt
 
-# -------------------------
-# Model Weights (large files)
-# -------------------------
-weights/mrz_detector/*.pt
-weights/face_detector/*.caffemodel
 
 # -------------------------
 # Datasets (PRIVATE)

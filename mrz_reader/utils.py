@@ -7,19 +7,7 @@ from typing import Tuple, Union
 from deskew import determine_skew
 
 def delete_shadow(img: np.ndarray) -> np.ndarray:
-    """
-    Removes shadows from an image.
-
-    Parameters:
-    -----------
-    img : numpy.ndarray
-        Input image in which shadows are to be removed.
-
-    Returns:
-    --------
-    numpy.ndarray
-        Image with shadows removed.
-    """
+    
     rgb_planes = cv2.split(img)
 
     result_planes = []
@@ -36,19 +24,7 @@ def delete_shadow(img: np.ndarray) -> np.ndarray:
     return result_norm
 
 def clear_background(img: np.ndarray) -> np.ndarray:
-    """
-    Clears the background of an image and enhances the foreground.
-
-    Parameters:
-    -----------
-    img : numpy.ndarray
-        Input image whose background is to be cleared.
-
-    Returns:
-    --------
-    numpy.ndarray
-        Image with background cleared and enhanced foreground.
-    """
+    
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     mask = cv2.threshold(gray, 250, 255, cv2.THRESH_BINARY)[1]
 
@@ -73,23 +49,7 @@ def clear_background(img: np.ndarray) -> np.ndarray:
     return result
 
 def rotate(image: np.ndarray, angle: float, background: Union[int, Tuple[int, int, int]]) -> np.ndarray:
-    """
-    Rotates an image around its center.
-
-    Parameters:
-    -----------
-    image : numpy.ndarray
-        Input image to be rotated.
-    angle : float
-        Angle by which the image is to be rotated.
-    background : int or Tuple[int, int, int]
-        Background color to be used in the empty regions after rotation.
-
-    Returns:
-    --------
-    numpy.ndarray
-        Rotated image.
-    """
+    
     old_width, old_height = image.shape[:2]
     angle_radian = math.radians(angle)
     width = abs(np.sin(angle_radian) * old_height) + abs(np.cos(angle_radian) * old_width)
@@ -102,23 +62,7 @@ def rotate(image: np.ndarray, angle: float, background: Union[int, Tuple[int, in
     return cv2.warpAffine(image, rot_mat, (int(round(height)), int(round(width))), borderValue=background)
 
 def correct_skew(image: np.ndarray, delta: int = 1, limit: int = 5) -> Tuple[float, np.ndarray]:
-    """
-    Corrects skewness in an image.
-
-    Parameters:
-    -----------
-    image : numpy.ndarray
-        Input image in which skewness is to be corrected.
-    delta : int, optional
-        Incremental step size for angle testing (default is 1).
-    limit : int, optional
-        Maximum angle to test for skewness correction (default is 5).
-
-    Returns:
-    --------
-    Tuple[float, numpy.ndarray]
-        Tuple containing the best angle for correction and the rotated image.
-    """
+    
     def determine_score(arr, angle):
         data = inter.rotate(arr, angle, reshape=False, order=0)
         histogram = np.sum(data, axis=1)
@@ -144,19 +88,7 @@ def correct_skew(image: np.ndarray, delta: int = 1, limit: int = 5) -> Tuple[flo
     return best_angle, rotated
 
 def resize(image: np.ndarray) -> np.ndarray:
-    """
-    Resizes an image if its width is less than 1500 pixels.
-
-    Parameters:
-    -----------
-    image : numpy.ndarray
-        Input image to be resized.
-
-    Returns:
-    --------
-    numpy.ndarray
-        Resized image.
-    """
+    
     if image.shape[1] > 1500:
         return image
     else:
