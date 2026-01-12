@@ -1,0 +1,64 @@
+# -------------------------
+# Python
+# -------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# -------------------------
+# Virtual Environment
+# -------------------------
+passport_venv/
+venv/
+.env/
+
+# -------------------------
+# IDE / Editor
+# -------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# -------------------------
+# OS files
+# -------------------------
+.DS_Store
+Thumbs.db
+
+# -------------------------
+# YOLO Training Outputs
+# -------------------------
+runs/
+yolov8n.pt
+
+# -------------------------
+# Model Weights (large files)
+# -------------------------
+weights/mrz_detector/*.pt
+weights/face_detector/*.caffemodel
+
+# -------------------------
+# Datasets (PRIVATE)
+# -------------------------
+AUS_Labelled_data/
+UAE_Labelled_data/
+
+# -------------------------
+# OCR temp outputs
+# -------------------------
+outputs/
+*.jpg
+*.png
+
+# -------------------------
+# Notebooks
+# -------------------------
+.ipynb_checkpoints/
+
+# -------------------------
+# Cache
+# -------------------------
+.cache/
