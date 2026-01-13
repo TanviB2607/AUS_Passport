@@ -32,7 +32,18 @@ reader = MRZReader(
 )
 
 # Run pipeline
-result, boxes, face = reader.predict(image_path)
+output = reader.predict(image_path)
+
+ocr_results = output["ocr_results"]
+mrz_data = output["mrz_data"]
+validation = output["validation"]
+face = output["face"]
+
+print("OCR:", ocr_results)
+print("MRZ:", mrz_data)
+print("Validation:", validation)
+
+
 
 print("\nDETECTED BOXES:")
 print(boxes)
