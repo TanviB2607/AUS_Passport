@@ -4,6 +4,9 @@ import easyocr
 
 from mrz_reader.segmentation import SegmentationNetwork, FaceDetection
 from mrz_reader.utils import *
+from mrz_reader.mrz_parser import parse_mrz
+from mrz_reader.validator import cross_validate
+
 
 def instantiate_from_config_easyocr(config, reload=False):
     
@@ -52,14 +55,48 @@ class MRZReader:
             text = self.recognize_text(crop, preprocess_config or {})
             results[field] = text
 
+        # -------- MRZ PARSING & VALIDATION --------
+
+        mrz1 = results.get("MRZ-1", "")
+        mrz2 = results.get("MRZ-2", "")
+
+        if mrz1 and mrz2:
+            mrz_data = parse_mrz(mrz1, mrz2)
+            validation = cross_validate(mrz_data, results)
+        else:
+            mrz_data = {}
+            validation = {}
+
+
         # Optional face detection
         face = None
         if do_facedetect:
             face, face_coef = self.face_detection.detect(img, facedetect_coef)
 
-        return results, detections, face
+            # ---- MRZ POST PROCESSING ----
+        mrz_raw = results.get("mrz", "")
 
-    
+        if isinstance(mrz_raw, list):
+            mrz_text = " ".join([t[1] for t in mrz_raw])
+        else:
+            mrz_text = mrz_raw
+
+        mrz_lines = [l for l in mrz_text.split("\n") if len(l) > 30]
+
+        if len(mrz_lines) >= 2:
+            mrz_data = parse_mrz(mrz_lines[0], mrz_lines[1])
+            validation = cross_validate(mrz_data, results)
+        else:
+            mrz_data = {}
+            validation = {}
+
+        return {
+            "ocr_results": results,
+            "mrz_data": mrz_data,
+            "validation": validation,
+            "face": face
+        }
+   
     def recognize_text(self, image, preprocess_config):
         
         if isinstance(image, str):

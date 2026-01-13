@@ -1,5 +1,6 @@
 from ultralytics import YOLO
 import cv2
+import numpy as np
 
 class SegmentationNetwork:
     def __init__(self, model_path="weights/mrz_detector/mrz.pt"):
@@ -26,7 +27,6 @@ class SegmentationNetwork:
 
 
 class FaceDetection:
-    
 
     def __init__(self, prototxt_path, caffemodel_path):
         
