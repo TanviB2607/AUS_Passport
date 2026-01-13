@@ -44,18 +44,14 @@ print("MRZ:", mrz_data)
 print("Validation:", validation)
 
 
-
-print("\nDETECTED BOXES:")
-print(boxes)
-
 print("\nOCR RESULTS:")
-print(result)
+print(ocr_results)
 
 print("\nFINAL EXTRACTED DATA:\n")
 
 final_output = {}
 
-for field, ocr in result.items():
+for field, ocr in ocr_results.items():
     final_output[field] = clean_text(ocr)
 
 print("\nFINAL EXTRACTED DATA (SORTED):\n")
